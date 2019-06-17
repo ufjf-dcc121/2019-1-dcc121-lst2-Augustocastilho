@@ -14,6 +14,34 @@
         <button id="desempilhar">Desempilhar</button>
     </form>
     <ol></ol>
+    <script>
+        var itens = [];
+        var bEmpilha = document.getElementById("empilhar");
+        var bDesempilha = document.getElementById("desempilhar");
+        var lista = document.getElementsByTagName("ol")[0];
+        var lis = document.getElementsByTagName("li");
+
+        bEmpilha.addEventListener("click", function (e) {
+            e.preventDefault();
+            var texto = document.forms.listaOrd.entrada.value;
+            var valor = { "texto": texto };
+            itens.push(valor);
+
+            var novoLi = document.createElement("li");
+            novoLi.textContent = valor.texto;
+            lista.appendChild(novoLi);
+
+            document.forms.listaOrd.reset();
+            document.forms.listaOrd.entrada.focus();
+        });
+
+        bDesempilha.addEventListener("click", function (e) {
+            e.preventDefault();
+            lista.removeChild(lista.lastChild);
+            document.forms.listaOrd.reset();
+            document.forms.listaOrd.entrada.focus();
+        });      
+    </script>
 </body>
 
 </html>
