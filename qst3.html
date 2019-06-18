@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <title>Exercicio 3</title>
+</head>
+
+<body>
+    <h2>Lista da Excursão</h2>
+    <form name="excursao" method="POST">
+        <div>
+            <input type="text" placeholder="Nome" name="nome">
+            <input type="number" placeholder="Idade" name="idade">
+        </div>
+            <input type="submit">
+    </form>
+    <button id="excluir">Excluir</button>
+    <h4>Adultos: </h4>
+    <ul id="adultos"></ul>
+    <h4>Estudantes: </h4>
+    <ul id="estudantes"></ul>
+    <script>
+        var pessoa = document.getElementsByName("nome");
+        var anos = document.getElementsByName("idade");
+        var bExcluir = document.getElementById("excluir");
+        bExcluir.style.visibility = "hidden";
+
+        var listaA = document.getElementById("adultos");
+        var listaE = document.getElementById("estudantes");
+
+        document.forms.excursao.addEventListener("submit", function (e){
+            e.preventDefault();
+            var lNome = document.forms.excursao.nome.value;
+            var lIdade = document.forms.excursao.idade.value;
+
+            var novoLi = document.createElement("li");
+            novoLi.textContent = lNome+" - "+lIdade;
+
+            if(document.forms.excursao.idade.value >=18)
+            {
+                listaA.appendChild(novoLi);
+                listaA.addEventListener("click",edita(listaA));
+                
+            }
+            else if (document.forms.excursao.idade.value >=0){
+                listaE.appendChild(novoLi);
+            }
+            else{
+                alert("Voltou pra barriga ô lazarento?");
+            }
+
+            document.forms.excursao.reset();
+            document.forms.excursao.nome.focus();
+        });
+    
+        
+        
+        function edita(valores){
+            bExcluir.style.visibility = "visible";
+            listaA.style.color = "green";
+            listaA.contentEditable=true;
+        }
+    </script>
+</body>
+
+</html>
