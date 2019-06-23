@@ -37,8 +37,6 @@
         var listaA = document.getElementById("adultos");
         var listaE = document.getElementById("estudantes");
 
-        var contA = 0;
-        var contE = 0;
 
         document.forms.excursao.addEventListener("submit", function (e){
             e.preventDefault();
@@ -51,15 +49,13 @@
             
             if(lIdade >=18)
             {
-                adultos.push(novoLi);
+                adultos.push(dados);
                 listaA.appendChild(novoLi);
-                contA++;
                 novoLi.addEventListener("click", editaA);
             }
             else if (lIdade >=0){
-                estudantes.push(novoLi);
+                estudantes.push(dados);
                 listaE.appendChild(novoLi);
-                contE++;
                 novoLi.addEventListener("click", editaE);
             }
             else{
