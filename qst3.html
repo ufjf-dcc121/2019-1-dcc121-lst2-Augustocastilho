@@ -8,6 +8,7 @@
 
 <body>
     <h2>Lista da Excursão</h2>
+
     <form name="excursao" method="POST">
         <div>
             <input type="text" placeholder="Nome" name="nome">
@@ -15,12 +16,19 @@
         </div>
             <input type="submit">
     </form>
+
     <button id="excluir">Excluir</button>
+
     <h4>Adultos: </h4>
     <ul id="adultos"></ul>
+
     <h4>Estudantes: </h4>
     <ul id="estudantes"></ul>
+
     <script>
+        var adultos = [];
+        var estudantes = [];
+
         var pessoa = document.getElementsByName("nome");
         var anos = document.getElementsByName("idade");
         var bExcluir = document.getElementById("excluir");
@@ -29,22 +37,30 @@
         var listaA = document.getElementById("adultos");
         var listaE = document.getElementById("estudantes");
 
+        var contA = 0;
+        var contE = 0;
+
         document.forms.excursao.addEventListener("submit", function (e){
             e.preventDefault();
             var lNome = document.forms.excursao.nome.value;
             var lIdade = document.forms.excursao.idade.value;
+            var dados = {"nome":lNome, "idade":lIdade}
 
             var novoLi = document.createElement("li");
-            novoLi.textContent = lNome+" - "+lIdade;
-
-            if(document.forms.excursao.idade.value >=18)
+            novoLi.innerHTML= "<span>"+dados.nome+"</span>"+" - "+"<span>"+dados.idade+"</span>";
+            
+            if(lIdade >=18)
             {
+                adultos.push(novoLi);
                 listaA.appendChild(novoLi);
-                listaA.addEventListener("click",edita(listaA));
-                
+                contA++;
+                novoLi.addEventListener("click", editaA);
             }
-            else if (document.forms.excursao.idade.value >=0){
+            else if (lIdade >=0){
+                estudantes.push(novoLi);
                 listaE.appendChild(novoLi);
+                contE++;
+                novoLi.addEventListener("click", editaE);
             }
             else{
                 alert("Voltou pra barriga ô lazarento?");
@@ -53,14 +69,24 @@
             document.forms.excursao.reset();
             document.forms.excursao.nome.focus();
         });
-    
         
-        
-        function edita(valores){
+        function editaA(){
             bExcluir.style.visibility = "visible";
             listaA.style.color = "green";
-            listaA.contentEditable=true;
+            listaA.contentEditable = true;
+            bExcluir.onclick = removeA();
         }
+
+        function editaE(){
+            bExcluir.style.visibility = "visible";
+            listaE.style.color = "green";
+            listaE.contentEditable = true;
+        }
+
+        function removeA(){
+            listaA.removeChild;
+        }
+
     </script>
 </body>
 
