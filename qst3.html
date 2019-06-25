@@ -28,7 +28,7 @@
     <script>
         var adultos = [];
         var estudantes = [];
-
+        
         var pessoa = document.getElementsByName("nome");
         var anos = document.getElementsByName("idade");
         var bExcluir = document.getElementById("excluir");
@@ -75,8 +75,8 @@
 
         function editaE(){
             bExcluir.style.visibility = "visible";
-            listaE.style.color = "green";
-            listaE.contentEditable = true;
+            this.style.color = "green";
+            this.contentEditable = true;
         }
 
         function removeA(){
