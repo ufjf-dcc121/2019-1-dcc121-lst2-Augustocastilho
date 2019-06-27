@@ -4,86 +4,114 @@
 <head>
     <meta charset="utf-8">
     <title>Exercicio 3</title>
+    <style>
+        h2 {
+            margin-left: 24%;
+            text-decoration: underline;
+        }
+
+        #excursao {
+            display: block;
+            background-color: green;
+            padding: 5px;
+            
+        }
+
+        #tudo{
+            border: 5px solid;
+            width: 30%
+        }
+    </style>
 </head>
 
 <body>
+    <div id="tudo">
     <h2>Lista da Excursão</h2>
 
-    <form name="excursao" method="POST">
+    <form name="excursao" method="POST" id="excursao">
         <div>
             <input type="text" placeholder="Nome" name="nome">
-            <input type="number" placeholder="Idade" name="idade">
+            <input type="number" placeholder="Idade" name="idade" min="0">
         </div>
-            <input type="submit">
+        <input type="submit">
+        <button id="excluir">Excluir</button>
+        <button id="atualizar">Atualizar</button>
     </form>
 
-    <button id="excluir">Excluir</button>
+        <h4>Adultos: </h4>
+        <ul id="adultos"></ul>
 
-    <h4>Adultos: </h4>
-    <ul id="adultos"></ul>
-
-    <h4>Estudantes: </h4>
-    <ul id="estudantes"></ul>
-
+        <h4>Estudantes: </h4>
+        <ul id="estudantes"></ul>
+    </div>
     <script>
         var adultos = [];
         var estudantes = [];
-        
+
         var pessoa = document.getElementsByName("nome");
         var anos = document.getElementsByName("idade");
         var bExcluir = document.getElementById("excluir");
+        var bAtualizar = document.getElementById("atualizar");
+
         bExcluir.style.visibility = "hidden";
+        bAtualizar.style.visibility = "hidden";
 
         var listaA = document.getElementById("adultos");
         var listaE = document.getElementById("estudantes");
+        var aux;
 
-
-        document.forms.excursao.addEventListener("submit", function (e){
+        document.forms.excursao.addEventListener("submit", function (e) {
             e.preventDefault();
             var lNome = document.forms.excursao.nome.value;
             var lIdade = document.forms.excursao.idade.value;
-            var dados = {"nome":lNome, "idade":lIdade}
-
+            var dados = { "nome": lNome, "idade": lIdade }
             var novoLi = document.createElement("li");
-            novoLi.innerHTML= "<span>"+dados.nome+"</span>"+" - "+"<span>"+dados.idade+"</span>";
-            
-            if(lIdade >=18)
-            {
+            novoLi.innerHTML = "<span name='spanName'>" + dados.nome + "</span>" + " - " + "<span name='spanIdade'>" + dados.idade + "</span>";
+            if (lNome == "" || lIdade == "")
+                return;
+            if (lIdade >= 18) {
                 adultos.push(dados);
                 listaA.appendChild(novoLi);
-                novoLi.addEventListener("click", editaA);
+                novoLi.addEventListener("click", edita);
+
             }
-            else if (lIdade >=0){
+            else if (lIdade >= 0) {
                 estudantes.push(dados);
                 listaE.appendChild(novoLi);
-                novoLi.addEventListener("click", editaE);
-            }
-            else{
-                alert("Voltou pra barriga ô lazarento?");
+                novoLi.addEventListener("click", edita);
             }
 
             document.forms.excursao.reset();
             document.forms.excursao.nome.focus();
         });
-        
-        function editaA(){
-            bExcluir.style.visibility = "visible";
-            listaA.style.color = "green";
-            listaA.contentEditable = true;
-            bExcluir.onclick = removeA();
-        }
 
-        function editaE(){
+        function edita() {
             bExcluir.style.visibility = "visible";
+            bAtualizar.style.visibility = "visible";
             this.style.color = "green";
             this.contentEditable = true;
+            aux = this.parentElement;
+            bExcluir.addEventListener("click", remove);
+            bAtualizar.addEventListener("click", atualiza);
         }
 
-        function removeA(){
-            listaA.removeChild;
+        function remove() {
+            var listaAux = aux.getElementsByTagName("li");
+            for (var i = 0; i < listaAux.length; i++)
+                if (listaAux[i].style.color == "green")
+                    aux.removeChild(listaAux[i]);
+            bExcluir.style.visibility = "hidden";
+            bAtualizar.style.visibility = "hidden";
         }
 
+        function atualiza() {
+            var listaAux = aux.getElementsByTagName("li");
+            for (var i = 0; i < listaAux.length; i++)
+                if (listaAux[i].style.color == "green")
+                    listaAux[i].style.color = "black";
+            bExcluir.style.visibility = "hidden";
+            bAtualizar.style.visibility = "hidden";
+        }
     </script>
 </body>
-
 </html>
