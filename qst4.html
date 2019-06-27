@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercicio 4</title>
+</head>
+<body>
+    <form name="bixinhos">
+        <input type="text" name="animal" placeholder="Nome do animal">
+        <input type="number" step="0.01" name="altura" placeholder="Altura(metros)">
+        <input type="number" step="0.01" name="peso" placeholder="Peso(kg)">
+        <input type="number" name="velocidade" placeholder="Velocidade(km/h)">
+        <input type="number" name="idade" placeholder="Idade máxima(anos)">
+        <input type="submit">
+    </form>
+    <table>
+        <caption>Características</caption>
+        <tr>
+            <th scope="col">Animal</th>
+            <th scope="col">Altura (mestros)</th>
+            <th scope="col">Peso (kg)</th>
+            <th scope="col">Velocidade (km/h)</th>
+            <th scope="col">Idade máxima (anos)</th>
+        </tr>
+    </table>
+    <script>
+        var animal = document.getElementsByName("animal");
+        var altura = document.getElementsByName("altura");
+        var peso = document.getElementsByName("peso");
+        var velocidade = document.getElementsByName("velocidade");
+        var idade = document.getElementsByName("idade");
+    </script>
+</body>
+</html>
