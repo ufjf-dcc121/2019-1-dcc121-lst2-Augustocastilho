@@ -1,34 +1,184 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Exercicio 4</title>
 </head>
+
 <body>
     <form name="bixinhos">
-        <input type="text" name="animal" placeholder="Nome do animal">
-        <input type="number" step="0.01" name="altura" placeholder="Altura(metros)">
-        <input type="number" step="0.01" name="peso" placeholder="Peso(kg)">
-        <input type="number" name="velocidade" placeholder="Velocidade(km/h)">
-        <input type="number" name="idade" placeholder="Idade máxima(anos)">
-        <input type="submit">
+        <input type="text" name="animal" placeholder="Nome do animal" required>
+        <input type="number" step="0.01" name="altura" placeholder="Altura(metros)" min="0.01" required>
+        <input type="number" step="0.01" name="peso" placeholder="Peso(kg)" min="0.01" required>
+        <input type="number" name="velocidade" placeholder="Velocidade(km/h)" min="1" required>
+        <input type="number" name="idade" placeholder="Idade máxima(anos)" min="1" required>
+        <input type="submit" name="botao">
     </form>
-    <table>
-        <caption>Características</caption>
-        <tr>
-            <th scope="col">Animal</th>
-            <th scope="col">Altura (mestros)</th>
-            <th scope="col">Peso (kg)</th>
-            <th scope="col">Velocidade (km/h)</th>
-            <th scope="col">Idade máxima (anos)</th>
-        </tr>
+
+    <table border=1>
+        <caption>
+            <h3>Características</h3>
+        </caption>
+        <thead>
+            <tr>
+                <th scope="col">Animal</th>
+                <th scope="col">Altura (metros)</th>
+                <th scope="col">Peso (kg)</th>
+                <th scope="col">Velocidade (km/h)</th>
+                <th scope="col">Idade máxima (anos)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <th>Médias</th>
+            <td id="altura">0</td>
+            <td id="peso">0</td>
+            <td id="velocidade">0</td>
+            <td id="idade">0</td>
+        </tfoot>
     </table>
+
+    <ol type="i">
+        <li>Animal mais alto: <span id="maisAlto"></span></li>
+        <li>Animal mais pesado: <span id="maisPesado"></span></li>
+        <li>Animal mais veloz: <span id="maisVeloz"></span></li>
+        <li>Animal mais longevo: <span id="maisLongevo"></span></li>
+    </ol>
+
+    <p><span id="gordos">0</span> animal(is) está(ão) acima da média de peso.</p>
+
     <script>
-        var animal = document.getElementsByName("animal");
-        var altura = document.getElementsByName("altura");
-        var peso = document.getElementsByName("peso");
-        var velocidade = document.getElementsByName("velocidade");
-        var idade = document.getElementsByName("idade");
+        //vetores para os calculos das médias
+        var mAltura = [];
+        var mPeso = [];
+        var mVelocidade = [];
+        var mIdade = [];
+
+        var tabela = document.querySelector("tbody");
+        var pe = document.querySelector("tfoot");
+
+        var i = 0; //contador da quantidade de animais na lista
+
+        //Vetor para armazenar os maiores valores atuais
+        var maiorValor = [];
+
+        var pesados = document.getElementById("gordos");
+
+        document.forms.bixinhos.addEventListener("submit", insereDados);
+        function insereDados(e) {
+            e.preventDefault();
+            //variaveis para armazenamento das informações do form
+            var animal = document.forms.bixinhos.animal.value;
+            var altura = document.forms.bixinhos.altura.value;
+            var peso = document.forms.bixinhos.peso.value;
+            var velocidade = document.forms.bixinhos.velocidade.value;
+            var idade = document.forms.bixinhos.idade.value;
+
+            //variaveis com valores do animal atual
+            var novoTd1 = document.createElement("td");
+            var novoTd2 = document.createElement("td");
+            var novoTd3 = document.createElement("td");
+            var novoTd4 = document.createElement("td");
+            var novoTd5 = document.createElement("td");
+
+            novoTd1.innerHTML = animal;
+            novoTd2.innerHTML = altura;
+            novoTd3.innerHTML = peso;
+            novoTd4.innerHTML = velocidade;
+            novoTd5.innerHTML = idade;
+
+            var novoTr = document.createElement("tr");
+            novoTr.appendChild(novoTd1);
+            novoTr.appendChild(novoTd2);
+            novoTr.appendChild(novoTd3);
+            novoTr.appendChild(novoTd4);
+            novoTr.appendChild(novoTd5);
+            tabela.appendChild(novoTr);
+
+            mAltura[i] = Number(altura);
+            mPeso[i] = Number(peso);
+            mVelocidade[i] = Number(velocidade);
+            mIdade[i] = Number(idade);
+
+            //variaveis com as médias dos dados
+            var tAltura = atualizaPe(mAltura, i);
+            var tPeso = atualizaPe(mPeso, i);
+            var tVelocidade = atualizaPe(mVelocidade, i);
+            var tIdade = atualizaPe(mIdade, i);
+            i++;
+
+            //variaveis para atribuição dos valores no rodapé
+            var novoPe1 = document.getElementById("altura");
+            var novoPe2 = document.getElementById("peso");
+            var novoPe3 = document.getElementById("velocidade");
+            var novoPe4 = document.getElementById("idade");
+
+            novoPe1.innerHTML = parseFloat(tAltura.toFixed(2));
+            novoPe2.innerHTML = parseFloat(tPeso.toFixed(2));
+            novoPe3.innerHTML = parseFloat(tVelocidade.toFixed(2));
+            novoPe4.innerHTML = parseFloat(tIdade.toFixed(2));
+     
+            atualizaLista(animal, altura, peso, velocidade, idade, i, maiorValor);
+
+            pesados.innerHTML = atualizaPesados(peso, tPeso, i);
+            
+        }
+
+        function atualizaPe(variavel, i) {
+            var soma = 0;
+            for (var j = 0; j <= i; j++) {
+                soma += variavel[j];
+            }
+            return soma.innerHTML = Number(soma / (i + 1));
+        }
+
+        function atualizaLista(animal, altura, peso, velocidade, idade, i, maiorValor) {
+            var maisAlto = document.getElementById("maisAlto");
+            var maisPesado = document.getElementById("maisPesado");
+            var maisVeloz = document.getElementById("maisVeloz");
+            var maisLongevo = document.getElementById("maisLongevo");
+
+            if (i == 1) {
+                maisAlto.innerHTML = animal;
+                maisPesado.innerHTML = animal;
+                maisVeloz.innerHTML = animal;
+                maisLongevo.innerHTML = animal;
+
+                maiorValor[0] = altura;
+                maiorValor[1] = peso;
+                maiorValor[2] = velocidade;
+                maiorValor[3] = idade;
+            }
+            else {
+                if (altura > maiorValor[0]) {
+                    maisAlto.innerHTML = animal;
+                    maiorValor[0] = altura;
+                }
+                if (peso > maiorValor[1]) {
+                    maisPesado.innerHTML = animal;
+                    maiorValor[1] = peso;
+                }
+                if (velocidade > maiorValor[2]) {
+                    maisVeloz.innerHTML = animal;
+                    maiorValor[2] = velocidade;
+                }
+                if (idade > maiorValor[3]) {
+                    maisLongevo.innerHTML = animal;
+                    maiorValor[3] = idade;
+                }
+            }
+        }
+
+        function atualizaPesados(peso, media, i){
+            var acima=0;
+            for (var j=1; j<i; j++){
+                if(peso>media)
+                    acima++;
+            }
+            return acima;
+        }
     </script>
 </body>
+
 </html>
